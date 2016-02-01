@@ -28,6 +28,9 @@ void MainWindow::openFile()
     {
         QString fileName = dialog.selectedFiles().first();
         if (!fileName.isEmpty())
+        {
+            algorithm.setImage(fileName);
             ui->statusBar->showMessage("File loaded successfully.");
+        }
     }
 }

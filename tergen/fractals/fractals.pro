@@ -1,4 +1,5 @@
 QT       += core gui
+CONFIG   +=C++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -7,8 +8,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    algorithm.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    algorithm.h
 
 FORMS    += mainwindow.ui

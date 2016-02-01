@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "algorithm.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Logic::Algorithm algorithm;
 
 private slots:
     void openFile();

@@ -18,7 +18,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QOpenGLWidget" name="openGLWidget"/>
+       <widget class="Ui::MyGLWidget" name="openGLWidget"/>
       </item>
      </layout>
     </item>
@@ -73,6 +73,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Ui::MyGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>myglwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

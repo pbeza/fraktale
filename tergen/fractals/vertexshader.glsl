@@ -1,10 +1,5 @@
 #version 300 es
 
-precision highp vec4;
-precision highp vec3;
-precision highp mat4;
-precision highp mat3;
-
 in vec4 vertex;
 in vec3 normal;
 out vec3 vert;

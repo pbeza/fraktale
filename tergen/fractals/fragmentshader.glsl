@@ -1,5 +1,10 @@
 #version 300 es
 
+precision mediump int;
+precision mediump float;
+precision lowp sampler2D;
+precision lowp samplerCube;
+
 in vec3 vert;
 in vec3 vertNormal;
 uniform vec3 lightPos;

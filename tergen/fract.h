@@ -1,6 +1,9 @@
 #ifndef FRACT_H
 #define FRACT_H
 
+#include <vector>
+#include <cstdlib>
+
 // Must be square
 class point_container {
 private:
@@ -11,10 +14,11 @@ public:
 
     // Data must be filled with >= w*h elements!
     // Will throw otherwise
+    point_container( size_t w, size_t h );
     point_container( const std::vector<float> &dat, size_t w, size_t h );
     point_container( point_container &&other ) = default;
 
-    float &get( size_t x, size_t y );
+    float get( size_t x, size_t y ) const;
     void set( size_t x, size_t y, float val );
     size_t w() const { return width; }
     size_t h() const { return height; }
@@ -23,4 +27,4 @@ public:
 // s must be >-1.0 and <1.0
 point_container single_iter( const point_container &points, float s = 0.0f );
 
-#endif FRACT_H
+#endif

@@ -1,4 +1,4 @@
-#version 300 es
+#version 330
 
 in vec4 vertex;
 in vec3 normal;

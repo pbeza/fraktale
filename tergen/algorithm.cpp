@@ -40,8 +40,9 @@ void print_container( const point_container &pc )
 
 int main( int argc, char **argv )
 {
-    point_container test( 4, 3 );
-    test.set( 1, 1, 1.0f );
+    const int size = 5;
+    point_container test( size, size );
+    test.set( size/2, size/2, 1.0f );
     print_container( test );
     printf( "\n\n" );
     point_container test2 = single_iter( test, 0.0 );
@@ -53,8 +54,8 @@ point_container single_iter( const point_container &points, float s )
 {
     size_t sectors_w = points.w() - 1;
     size_t sectors_h = points.h() - 1;
-    size_t new_width = sectors_w * sectors_w;
-    size_t new_height = sectors_h * sectors_h;
+    size_t new_width = sectors_w * sectors_w + 1;
+    size_t new_height = sectors_h * sectors_h + 1;
     point_container new_data( new_width, new_height );
 
     const float w = 1.0f;
@@ -70,6 +71,7 @@ point_container single_iter( const point_container &points, float s )
         //const float x = (float)i / sectors_w;
         //const float b = x;
         for( size_t j = 0; j < sectors_h - 1; j++ ) {
+//printf( "Sector %lu,%lu\n", i, j );
             //const float y = (float)j / sectors_h;
             //const float d = y;
 
@@ -88,11 +90,13 @@ point_container single_iter( const point_container &points, float s )
                 const float f = dzy * (1 - s) / h;
 
                 const float h = ll;
+
+//printf( "First e:%.2f f:%.2f h: %.2f\n", e, f, h );
+
                 for( size_t ii = 0; ii < points.w() / 2 + 1; ii++ ) {
                     const float lx = (float)ii / points.w();
                     for( size_t jj = 0; jj < points.h() / 2 + 1; jj++ ) {
                         const float ly = (float)ii / points.h();
-
                         const float lz = points.get( ii, jj );
 
                         //const float newx = (lx * a) + b;
@@ -103,21 +107,24 @@ point_container single_iter( const point_container &points, float s )
                 }
             }
 
-            if( false )
+            if( true )
             {
                 // The second triangle of the quad
                 // Kinda inverted
-                const float dzx = ur - ul;
-                const float dzy = ur - lr;
+                const float dzx = -(ur - ul);
+                const float dzy = -(ur - lr);
 
                 const float e = dzx * (1 - s) / w;
                 const float f = dzy * (1 - s) / h;
 
                 const float h = ur;
+
+//printf( "Second e:%.2f f:%.2f h: %.2f\n", e, f, h );
+
                 for( size_t ii = points.w() / 2 + 1; ii < points.w(); ii++ ) {
-                    const float lx = (float)ii / points.w();
+                    const float lx = 1.0f - (float)ii / points.w();
                     for( size_t jj = points.h() / 2 + 1; jj < points.h(); jj++ ) {
-                        const float ly = (float)ii / points.h();
+                        const float ly = 1.0f - (float)ii / points.h();
                         const float lz = points.get( ii, jj );
                         const float newz = (e * lx) + (f * ly) + (s * lz) + h;
                         new_data.set( i * points.w() + ii,  j * points.h() + jj, newz );

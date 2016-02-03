@@ -1,9 +1,4 @@
-#version 300 es
-
-precision mediump int;
-precision mediump float;
-precision lowp sampler2D;
-precision lowp samplerCube;
+#version 330
 
 in vec3 vert;
 in vec3 vertNormal;
@@ -16,4 +11,6 @@ void main() {
    vec3 color = vec3(0.39, 1.0, 0.0);
    vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);
    fragColor = vec4(col, 1.0);
+
+   fragColor = vec4( 1.0);
 }

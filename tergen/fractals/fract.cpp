@@ -38,7 +38,7 @@ void print_container( const point_container &pc )
         printf( "\n" );
     }
 }
-
+/*
 int main( int argc, char **argv )
 {
     const int size = 5;
@@ -52,6 +52,7 @@ int main( int argc, char **argv )
     box_dimension( test2, 9 );
     return 0;
 }
+*/
 
 point_container multi_iter( const point_container &points, size_t iters, float s )
 {

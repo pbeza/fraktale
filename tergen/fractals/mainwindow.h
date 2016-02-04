@@ -23,6 +23,8 @@ private:
 
 private slots:
     void openFile();
+    void regenFractal();
+    void calcDimension();
 };
 
 #endif // MAINWINDOW_H

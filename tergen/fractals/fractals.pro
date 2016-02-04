@@ -1,7 +1,5 @@
-QT       += core gui opengl
+QT       += core gui opengl widgets
 CONFIG   += C++14
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = fractals
 TEMPLATE = app

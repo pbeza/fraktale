@@ -5,11 +5,9 @@
 
 namespace Logic {
 
-class Algorithm
+struct Algorithm
 {
-public:
     void setImage(const QString& path);
-private:
     QImage image;
     QList<QColor> pixels;
 };

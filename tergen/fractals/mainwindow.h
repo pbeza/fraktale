@@ -19,6 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Logic::Algorithm algorithm;
+    void runAlgorithm();
 
 private slots:
     void openFile();

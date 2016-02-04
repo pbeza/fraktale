@@ -48,9 +48,9 @@ void Ui::MyGLWidget::initializeGL()
     // Setup Vertex Buffer Object (VBO).
 
     GLfloat vndata[] = {
-        0.1, 0.1, 0.0,
+        0.1, 0.9, 0.0,
         0.9, 0.9, 0.0,
-        0.1, 0.9, 0.0
+        0.1, 0.1, 0.0
     };
     const int n = sizeof(vndata) / sizeof(GLfloat);
     m_logoVbo.create();
@@ -95,7 +95,7 @@ void Ui::MyGLWidget::paintGL()
     glEnable(GL_CULL_FACE);
 
     m_world.setToIdentity();
-    m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);
+    m_world.rotate(180.0f - m_xRot / 16.0f, 1, 0, 0);
     m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
     m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
@@ -107,7 +107,7 @@ void Ui::MyGLWidget::paintGL()
     //QMatrix3x3 normalMatrix = m_world.normalMatrix();
     //m_program.setUniformValue(m_normalMatrixLoc, normalMatrix);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_LINES, 0, 3);
 
     m_program.release();
 }

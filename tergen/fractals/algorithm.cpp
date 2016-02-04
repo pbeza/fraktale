@@ -35,13 +35,4 @@ void Logic::Algorithm::setImage(const QString& path)
             pixels.append(QColor(*pix));
         }
     }
-
-    // Normalized RGBA
-
-    for (const QColor& c : pixels)
-    {
-        qreal r, g, b, a;
-        c.getRgbF(&r, &g, &b, &a);
-        qDebug() << "(" << r << ", " << g << ", " << b << ")";
-    }
 }

@@ -46,7 +46,7 @@ int main( int argc, char **argv )
     test.set( size/2, size/2, 1.0f );
     print_container( test );
     printf( "\n\n" );
-    point_container test2 = multi_iter( test, 2, 0.0 );
+    point_container test2 = multi_iter( test, 2, 0.5 );
     //print_container( test2 );
     printf( "\n\n" );
     box_dimension( test2, 9 );

@@ -10,11 +10,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         algorithm.cpp \
-        myglwidget.cpp
+        myglwidget.cpp \
+    fract.cpp
 
 HEADERS += mainwindow.h \
         algorithm.h \
-        myglwidget.h
+        myglwidget.h \
+    fract.h
 
 FORMS    += mainwindow.ui
 

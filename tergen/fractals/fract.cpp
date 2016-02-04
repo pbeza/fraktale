@@ -79,8 +79,8 @@ point_container single_iter( const point_container &points, float s )
     const float w = 1.0f;
     const float h = 1.0f;
 
-    const float dx = 1.0f / sectors_w;
-    const float dy = 1.0f / sectors_h;
+    //const float dx = 1.0f / sectors_w;
+    //const float dy = 1.0f / sectors_h;
 
     //const float a = dx / xm;
     //const float c = dy / ym;

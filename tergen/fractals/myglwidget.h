@@ -51,6 +51,7 @@ private:
     int m_xRot;
     int m_yRot;
     int m_zRot;
+    std::vector<GLfloat> vndata;
 };
 
 }

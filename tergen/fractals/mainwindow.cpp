@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::runAlgorithm()
 {
-    const size_t iters = 2;
+    const size_t iters = 1;
     const float s = 0.0f;
     const size_t w = algorithm.image.width(), h = algorithm.image.height();
     point_container input(w, h), output(w, h);

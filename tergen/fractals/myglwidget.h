@@ -18,6 +18,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 
 public:
     MyGLWidget(QWidget *parent);
+    void updateVertices();
 
 public slots:
     void setXRotation(int angle);
@@ -37,6 +38,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    const std::string VERTEX_SHADER_PATH = "../fractals/vertexshader.glsl";
+    const std::string FRAGMENT_SHADER_PATH = "../fractals/fragmentshader.glsl";
     QPoint m_lastPos;
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_logoVbo;
@@ -44,13 +47,11 @@ private:
     QMatrix4x4 m_proj;
     QMatrix4x4 m_camera;
     QMatrix4x4 m_world;
-    int m_projMatrixLoc;
-    int m_mvMatrixLoc;
-    int m_normalMatrixLoc;
-    int m_lightPosLoc;
+    int m_mvpMatrixLoc;
     int m_xRot;
     int m_yRot;
     int m_zRot;
+public:
     std::vector<GLfloat> vndata;
 };
 

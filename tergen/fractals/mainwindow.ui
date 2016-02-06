@@ -20,14 +20,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="scaleLabel">
           <property name="text">
            <string>Skalowanie</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="sBox">
+         <widget class="QDoubleSpinBox" name="scaleBox">
           <property name="minimum">
            <double>-1.000000000000000</double>
           </property>
@@ -40,35 +40,35 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="iterationsLabel">
           <property name="text">
            <string>Iteracje</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="iterBox">
+         <widget class="QSpinBox" name="iterationsBox">
           <property name="maximum">
            <number>10</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="dimensionLabel">
           <property name="text">
            <string>Podziały</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="dimSubdiv">
+         <widget class="QSpinBox" name="dimensionSubdiv">
           <property name="maximum">
            <number>20</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="dimButton">
+         <widget class="QPushButton" name="dimensionButton">
           <property name="text">
            <string>Policz wymiar</string>
           </property>
@@ -89,7 +89,7 @@
      <x>0</x>
      <y>0</y>
      <width>520</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

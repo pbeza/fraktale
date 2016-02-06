@@ -33,16 +33,14 @@ void Ui::MyGLWidget::initializeGL()
 
     initializeOpenGLFunctions();
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, "../fractals/vertexshader.glsl");
-    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, "../fractals/fragmentshader.glsl");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, VERTEX_SHADER_PATH.c_str());
+    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, FRAGMENT_SHADER_PATH.c_str());
     m_program.bindAttributeLocation("vertex", 0);
     if (!m_program.link())
         qDebug() << "Linking OpenGL program has failed!";
-
     if (!m_program.bind())
         qDebug() << "Binding OpenGL program has failed!";
-    m_projMatrixLoc = m_program.uniformLocation("projMatrix");
-    m_mvMatrixLoc = m_program.uniformLocation("mvMatrix");
+    m_mvpMatrixLoc = m_program.uniformLocation("mvpMatrix");
 
     // Setup Vertex Array Object (VAO).
 
@@ -51,11 +49,10 @@ void Ui::MyGLWidget::initializeGL()
 
     // Setup Vertex Buffer Object (VBO).
 
-    const int n = vndata.size();
     m_logoVbo.create();
     if (!m_logoVbo.bind())
             qDebug() << "Binding OpenGL program has failed!";
-    m_logoVbo.allocate(&vndata[0], n * sizeof(GLfloat));
+    m_logoVbo.allocate(&vndata[0], vndata.size() * sizeof(GLfloat));
 
     // Store the vertex attribute bindings for the program.
 
@@ -68,7 +65,7 @@ void Ui::MyGLWidget::initializeGL()
     // Our camera never changes in this example.
 
     m_camera.setToIdentity();
-    m_camera.translate(0, 0, -1);
+    m_camera.translate(0, 0, -2);
 
     m_program.release();
 }
@@ -81,7 +78,6 @@ void Ui::MyGLWidget::resizeGL(int w, int h)
 
 void Ui::MyGLWidget::paintGL()
 {
-    // Draw the scene.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -94,8 +90,7 @@ void Ui::MyGLWidget::paintGL()
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
     if (!m_program.bind())
         qDebug() << "Binding OpenGL program has failed!";
-    m_program.setUniformValue(m_projMatrixLoc, m_proj);
-    m_program.setUniformValue(m_mvMatrixLoc, m_camera * m_world);
+    m_program.setUniformValue(m_mvpMatrixLoc, m_proj * m_camera * m_world);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -105,7 +100,6 @@ void Ui::MyGLWidget::paintGL()
 void Ui::MyGLWidget::mousePressEvent(QMouseEvent *event)
 {
     m_lastPos = event->pos();
-    qDebug() << "pressed";
 }
 
 void Ui::MyGLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -151,4 +145,13 @@ void Ui::MyGLWidget::setZRotation(int angle)
         emit zRotationChanged(angle);
         update();
     }
+}
+
+void Ui::MyGLWidget::updateVertices()
+{
+    if (!m_program.bind())
+        qDebug() << "Binding OpenGL program has failed!";
+    if (!m_logoVbo.bind())
+            qDebug() << "Binding OpenGL program has failed!";
+    m_logoVbo.write(0, &vndata[0], vndata.size() * sizeof(GLfloat));
 }

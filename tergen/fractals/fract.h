@@ -22,6 +22,7 @@ public:
     point_container &operator=( point_container &&other ) = default;
     point_container &operator=( const point_container &other ) = default;
 
+    const std::vector<float>& get() const { return data; }
     float get( size_t x, size_t y ) const;
     void set( size_t x, size_t y, float val );
     size_t w() const { return width; }
@@ -35,4 +36,4 @@ point_container multi_iter( const point_container &points, size_t iters, float s
 // Creates 8^subdiv boxes, so keep subdiv low!
 float box_dimension( const point_container &points, size_t subdiv = 8 );
 
-#endif
+#endif // FRACT_H

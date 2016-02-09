@@ -51,6 +51,7 @@ private:
     int m_xRot;
     int m_yRot;
     int m_zRot;
+    size_t vertex_count;
 public:
     std::vector<GLfloat> vndata;
 };

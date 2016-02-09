@@ -63,13 +63,17 @@ point_container multi_iter( const point_container &points, size_t iters, float s
             return pts;
         }
 
-        pts = std::move( single_iter( pts, s ) );
+        pts = single_iter( pts, s );
         iters--;
     }
 }
 
 point_container single_iter( const point_container &points, float s )
 {
+    if( points.w() < 2 || points.h() < 2 ) {
+        return points;
+    }
+
     size_t sectors_w = points.w() - 1;
     size_t sectors_h = points.h() - 1;
     size_t new_width = sectors_w * sectors_w + 1;

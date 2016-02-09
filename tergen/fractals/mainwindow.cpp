@@ -51,8 +51,20 @@ void MainWindow::runAlgorithm()
         ddebugFile << i << " ";
     ddebugFile.close();
 #endif
-    //ui->openGLWidget->vndata = multi_iter(input, iters, s).get();
-    ui->openGLWidget->vndata = { 0.1, 0.1, 0.0, 0.2, 0.8, 0, 0.8, 0.1, 0.0 }; // DEBUG
+    auto temp = multi_iter(input, iters, s);
+    auto &vec = temp.get();
+    auto &vndata = ui->openGLWidget->vndata;
+    vndata.clear();
+    vndata.resize(vec.size() * 3);
+    for(size_t xx = 0; xx < temp.w(); xx++) {
+        for(size_t yy = 0; yy < temp.h(); yy++) {
+            size_t index = 3 * (xx * temp.h() + yy);
+            vndata[index + 0] = (float)xx / temp.w();
+            vndata[index + 1] = (float)yy / temp.h();
+            vndata[index + 2] = vec[xx * temp.h() + yy];
+        }
+    }
+    //ui->openGLWidget->vndata = { 0.1, 0.1, 0.0, 0.2, 0.8, 0, 0.8, 0.1, 0.0 }; // DEBUG
     ui->openGLWidget->updateVertices();
     ui->openGLWidget->update();
 #ifdef QT_DEBUG
@@ -67,7 +79,7 @@ void MainWindow::openFile()
 {
     QFileDialog dialog;
     QStringList mimeTypeFilters;
-    mimeTypeFilters << "image/jpeg" << "image/png";
+    mimeTypeFilters << "image/png" << "image/jpeg";
     dialog.setMimeTypeFilters(mimeTypeFilters);
     if (QDialog::Accepted == dialog.exec())
     {
@@ -83,7 +95,8 @@ void MainWindow::openFile()
 
 void MainWindow::regenFractal()
 {
-    QMessageBox::information(NULL, "Hello World!", "Regen!");
+    runAlgorithm();
+    //QMessageBox::information(NULL, "Hello World!", "Regen!");
 }
 
 void MainWindow::calcDimension()

@@ -66,6 +66,7 @@ void Ui::MyGLWidget::initializeGL()
 
     m_camera.setToIdentity();
     m_camera.translate(0, 0, -2);
+    m_xRot = 90;
 
     m_program.release();
 }
@@ -81,6 +82,8 @@ void Ui::MyGLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glDisable(GL_CULL_FACE);
 
     m_world.setToIdentity();
     m_world.rotate(180.0f - m_xRot / 16.0f, 1, 0, 0);
@@ -92,7 +95,7 @@ void Ui::MyGLWidget::paintGL()
         qDebug() << "Binding OpenGL program has failed!";
     m_program.setUniformValue(m_mvpMatrixLoc, m_proj * m_camera * m_world);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, vndata.size());
 
     m_program.release();
 }
@@ -153,5 +156,6 @@ void Ui::MyGLWidget::updateVertices()
         qDebug() << "Binding OpenGL program has failed!";
     if (!m_logoVbo.bind())
             qDebug() << "Binding OpenGL program has failed!";
-    m_logoVbo.write(0, &vndata[0], vndata.size() * sizeof(GLfloat));
+    m_logoVbo.allocate(&vndata[0], vndata.size() * sizeof(GLfloat));
+    m_logoVbo.release();
 }

@@ -18,16 +18,16 @@ static void qNormalizeAngle(int &angle)
 }
 
 Ui::MyGLWidget::MyGLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
-    //, m_logoVbo(QOpenGLBuffer::VertexBuffer)
-    , m_Ibo(QOpenGLBuffer::IndexBuffer)
+    : QOpenGLWidget(parent),
+    //m_logoVbo(QOpenGLBuffer::VertexBuffer),
+      m_Ibo(QOpenGLBuffer::IndexBuffer),
+      cameraPosition(0.5, 0.5, 0.5)
 {
     vndata = {
         0.1, 0.9, 0.0,
         0.9, 0.9, 0.0,
         0.1, 0.1, 0.0
     };
-
     index_data = {
         0, 1, 2
     };
@@ -81,8 +81,8 @@ void Ui::MyGLWidget::initializeGL()
     m_Ibo.release();
 
     m_camera.setToIdentity();
-    m_camera.translate(0, 0, -2);
-    m_xRot = 90;
+    m_camera.translate(cameraPosition);
+    //m_xRot = 90;
 
     m_program.release();
     //m_vao.release();
@@ -116,7 +116,7 @@ void Ui::MyGLWidget::paintGL()
     if (!m_Ibo.bind())
         qDebug() << "Binding index buffer has failed!";
 
-    glDrawElements(GL_TRIANGLE_STRIP, index_data.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(drawMode, index_data.size(), GL_UNSIGNED_INT, 0);
     //glDrawElements(GL_POINTS, index_data.size(), GL_UNSIGNED_INT, 0);
     //glDrawArrays(GL_TRIANGLE_STRIP, 0, index_data.size());
 
@@ -135,10 +135,10 @@ void Ui::MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 
     if (event->buttons() & Qt::LeftButton) {
         setXRotation(m_xRot + 8 * dy);
-        setYRotation(m_yRot + 8 * dx);
+        setZRotation(m_zRot + 8 * dx);
     } else if (event->buttons() & Qt::RightButton) {
         setXRotation(m_xRot + 8 * dy);
-        setZRotation(m_zRot + 8 * dx);
+        setYRotation(m_yRot + 8 * dx);
     }
     m_lastPos = event->pos();
 }

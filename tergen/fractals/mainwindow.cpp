@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <fstream>
 
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    setFocusPolicy(Qt::ClickFocus);
     ui->setupUi(this);
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
@@ -136,4 +138,29 @@ void MainWindow::calcDimension()
     int dim = ui->dimensionSubdiv->text().toInt();
     float dimension = box_dimension( result_point_container, dim );
     QMessageBox::information(NULL, "Dimension result", "Dimension equals = " + QString::number(dimension));
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+    QVector3D cameraShift(0, 0, 0);
+    char test = (char)e->key();
+
+    if (test == 'W' || test == 'w') {
+        cameraShift.setY(0.01);
+    } else if (test == 'S' || test == 's') {
+        cameraShift.setY(-0.01);
+    } else if (test == 'A' || test == 'a') {
+        cameraShift.setX(0.01);
+    } else if (test == 'D' || test == 'd') {
+        cameraShift.setX(-0.01);
+    } else if (test == 'Z' || test == 'z') {
+        cameraShift.setZ(0.01);
+    } else if (test == 'X' || test == 'x') {
+        cameraShift.setZ(-0.01);
+    } else if (test == 'M' || test == 'm') {
+        ui->openGLWidget->drawMode = ui->openGLWidget->drawMode == GL_TRIANGLE_STRIP ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
+    } else return;
+
+    ui->openGLWidget->m_camera.translate(cameraShift);
+    ui->openGLWidget->update();
 }

@@ -28,6 +28,9 @@ private slots:
     void openFile();
     void regenFractal();
     void calcDimension();
+
+protected:
+    void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
 };
 
 #endif // MAINWINDOW_H

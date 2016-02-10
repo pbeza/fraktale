@@ -46,16 +46,19 @@ private:
     QOpenGLBuffer m_Ibo;
     QOpenGLShaderProgram m_program;
     QMatrix4x4 m_proj;
-    QMatrix4x4 m_camera;
     QMatrix4x4 m_world;
     int m_mvpMatrixLoc;
     int m_xRot;
     int m_yRot;
     int m_zRot;
     size_t vertex_count;
+
 public:
+    QMatrix4x4 m_camera;
     std::vector<GLfloat> vndata;
     std::vector<GLuint> index_data;
+    QVector3D cameraPosition;
+    GLenum drawMode = GL_TRIANGLE_STRIP;
 };
 
 }

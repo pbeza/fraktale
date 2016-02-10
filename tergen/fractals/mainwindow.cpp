@@ -54,14 +54,34 @@ void MainWindow::runAlgorithm()
     result_point_container = multi_iter(input, iters, s);
     auto &vec = result_point_container.get();
     auto &vndata = ui->openGLWidget->vndata;
+    auto &index_data = ui->openGLWidget->index_data;
     vndata.clear();
-    vndata.resize(vec.size() * 3);
-    for(size_t xx = 0; xx < result_point_container.w(); xx++) {
-        for(size_t yy = 0; yy < result_point_container.h(); yy++) {
-            size_t index = 3 * (xx * result_point_container.h() + yy);
-            vndata[index + 0] = (float)xx / result_point_container.w();
-            vndata[index + 1] = (float)yy / result_point_container.h();
-            vndata[index + 2] = vec[xx * result_point_container.h() + yy];
+    vndata.reserve(vec.size() * 3);
+    size_t res_w = result_point_container.w();
+    size_t res_h = result_point_container.h();
+    index_data.clear();
+    index_data.reserve(2 * (res_w - 1) * res_h + (2 * res_w - 2));
+    for(size_t xx = 0; xx < res_w; xx++) {
+        for(size_t yy = 0; yy < res_h; yy++) {
+            vndata.push_back((float)yy / res_h);
+            vndata.push_back((float)xx / res_w);
+            vndata.push_back(vec[xx * res_h + yy]);
+        }
+    }
+    for(size_t xx = 0; xx < res_w; xx++) {
+        for(size_t yy = 0; yy < res_h; yy++) {
+            index_data.push_back((xx + 0) * res_h + yy);
+            index_data.push_back((xx + 1) * res_h + yy);
+        }
+
+        xx++;
+        if(xx >= res_w - 1){
+            break;
+        }
+
+        for(size_t yy = res_h - 1; yy > 0; yy--) {
+            index_data.push_back((xx + 0) * res_h + yy);
+            index_data.push_back((xx + 1) * res_h + yy);
         }
     }
     ui->openGLWidget->updateVertices();

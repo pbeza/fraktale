@@ -43,6 +43,7 @@ private:
     QPoint m_lastPos;
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_logoVbo;
+    QOpenGLBuffer m_Ibo;
     QOpenGLShaderProgram m_program;
     QMatrix4x4 m_proj;
     QMatrix4x4 m_camera;
@@ -54,6 +55,7 @@ private:
     size_t vertex_count;
 public:
     std::vector<GLfloat> vndata;
+    std::vector<GLuint> index_data;
 };
 
 }

@@ -19,11 +19,17 @@ static void qNormalizeAngle(int &angle)
 
 Ui::MyGLWidget::MyGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
+    //, m_logoVbo(QOpenGLBuffer::VertexBuffer)
+    , m_Ibo(QOpenGLBuffer::IndexBuffer)
 {
     vndata = {
         0.1, 0.9, 0.0,
         0.9, 0.9, 0.0,
         0.1, 0.1, 0.0
+    };
+
+    index_data = {
+        0, 1, 2
     };
 }
 
@@ -44,31 +50,42 @@ void Ui::MyGLWidget::initializeGL()
 
     // Setup Vertex Array Object (VAO).
 
-    m_vao.create();
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+    //m_vao.create();
+    //m_vao.bind();
 
     // Setup Vertex Buffer Object (VBO).
 
     m_logoVbo.create();
     if (!m_logoVbo.bind())
-            qDebug() << "Binding OpenGL program has failed!";
+        qDebug() << "Binding vertex position buffer has failed!";
     m_logoVbo.allocate(&vndata[0], vndata.size() * sizeof(GLfloat));
+    //m_logoVbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
 
     // Store the vertex attribute bindings for the program.
 
     if (!m_logoVbo.bind())
-        qDebug() << "Binding OpenGL program has failed!";
+        qDebug() << "Binding vertex position buffer has failed!";
+    int vertexLocation = m_program.attributeLocation("vertex");
+    m_program.enableAttributeArray(vertexLocation);
+    m_program.setAttributeBuffer(vertexLocation, GL_FLOAT, 0, 3, 0);
+
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     m_logoVbo.release();
 
-    // Our camera never changes in this example.
+    m_Ibo.create();
+    if (!m_Ibo.bind())
+        qDebug() << "Binding index buffer has failed!";
+    m_Ibo.allocate(&index_data[0], index_data.size() * sizeof(GLuint));
+    //m_Ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_Ibo.release();
 
     m_camera.setToIdentity();
     m_camera.translate(0, 0, -2);
     m_xRot = 90;
 
     m_program.release();
+    //m_vao.release();
 }
 
 void Ui::MyGLWidget::resizeGL(int w, int h)
@@ -90,12 +107,18 @@ void Ui::MyGLWidget::paintGL()
     m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
     m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+    //m_vao.bind();
     if (!m_program.bind())
         qDebug() << "Binding OpenGL program has failed!";
     m_program.setUniformValue(m_mvpMatrixLoc, m_proj * m_camera * m_world);
+    if (!m_logoVbo.bind())
+        qDebug() << "Binding vertex position buffer has failed!";
+    if (!m_Ibo.bind())
+        qDebug() << "Binding index buffer has failed!";
 
-    glDrawArrays(GL_TRIANGLES, 0, vndata.size());
+    glDrawElements(GL_TRIANGLE_STRIP, index_data.size(), GL_UNSIGNED_INT, 0);
+    //glDrawElements(GL_POINTS, index_data.size(), GL_UNSIGNED_INT, 0);
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, index_data.size());
 
     m_program.release();
 }
@@ -155,7 +178,11 @@ void Ui::MyGLWidget::updateVertices()
     if (!m_program.bind())
         qDebug() << "Binding OpenGL program has failed!";
     if (!m_logoVbo.bind())
-            qDebug() << "Binding OpenGL program has failed!";
+        qDebug() << "Binding vertex position buffer has failed!";
     m_logoVbo.allocate(&vndata[0], vndata.size() * sizeof(GLfloat));
     m_logoVbo.release();
+    if (!m_Ibo.bind())
+        qDebug() << "Binding index buffer has failed!";
+    m_Ibo.allocate(&index_data[0], index_data.size() * sizeof(GLuint));
+    m_Ibo.release();
 }

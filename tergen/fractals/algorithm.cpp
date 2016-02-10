@@ -7,7 +7,7 @@
 void Logic::Algorithm::setImage(const QString& path)
 {
     if (!image.load(path))
-        return;
+        throw "Bad path";
 
     image = image.convertToFormat(QImage::Format_ARGB32);
 

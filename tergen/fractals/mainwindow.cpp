@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->openGLWidget, SIGNAL(yRotationChanged(int)), ui->yAxisVerticalSlider, SLOT(setValue(int)));
     connect(ui->zAxisVerticalSlider, SIGNAL(valueChanged(int)), ui->openGLWidget, SLOT(setZRotation(int)));
     connect(ui->openGLWidget, SIGNAL(zRotationChanged(int)), ui->zAxisVerticalSlider, SLOT(setValue(int)));
+
+    algorithm.setImage("../fractals/img/1.png");
+    runAlgorithm();
 }
 
 MainWindow::~MainWindow()
@@ -32,7 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::runAlgorithm()
 {
-    const float s = 0.0f;
+    const float s = (float)ui->scaleBox->value();
     size_t x = 0, y = 0;
     const size_t
             iters = ui->iterationsBox->text().toInt(),

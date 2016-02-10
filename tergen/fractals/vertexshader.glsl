@@ -2,7 +2,9 @@
 
 in vec4 vertex;
 uniform mat4 mvpMatrix;
+out vec4 vertex_out;
 
 void main() {
-   gl_Position = mvpMatrix * vertex;
+    vertex_out = vertex;
+    gl_Position = mvpMatrix * vertex;
 }

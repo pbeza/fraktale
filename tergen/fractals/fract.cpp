@@ -341,11 +341,12 @@ float box_dimension( const point_container &points, const size_t subdiv )
         cur_side_len /= 2;
     }
 
+    float mink = 0.0f;
     for( size_t i = 0; i < counts.size(); i++ ) {
         const float boxlen = 1.0f / lens[i];
-        const float mink = counts[i] > 0 ? log( counts[i] ) / log( 1.0 / boxlen ) : 0.0f;
+        mink = counts[i] > 0 ? log( counts[i] ) / log( 1.0 / boxlen ) : 0.0f;
         printf( "%lu na %lu, minkowski %.2f\n", counts[i], lens[i] * lens[i] * lens[i], mink );
     }
 
-    return 0;
+    return mink;
 }

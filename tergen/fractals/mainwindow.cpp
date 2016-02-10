@@ -17,6 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dimensionButton, SIGNAL(pressed()), this, SLOT(calcDimension()));
     connect(ui->scaleBox, SIGNAL(valueChanged(double)), this, SLOT(regenFractal()));
     connect(ui->iterationsBox, SIGNAL(valueChanged(int)), this, SLOT(regenFractal()));
+    connect(ui->xAxisVerticalSlider, SIGNAL(valueChanged(int)), ui->openGLWidget, SLOT(setXRotation(int)));
+    connect(ui->openGLWidget, SIGNAL(xRotationChanged(int)), ui->xAxisVerticalSlider, SLOT(setValue(int)));
+    connect(ui->yAxisVerticalSlider, SIGNAL(valueChanged(int)), ui->openGLWidget, SLOT(setYRotation(int)));
+    connect(ui->openGLWidget, SIGNAL(yRotationChanged(int)), ui->yAxisVerticalSlider, SLOT(setValue(int)));
+    connect(ui->zAxisVerticalSlider, SIGNAL(valueChanged(int)), ui->openGLWidget, SLOT(setZRotation(int)));
+    connect(ui->openGLWidget, SIGNAL(zRotationChanged(int)), ui->zAxisVerticalSlider, SLOT(setValue(int)));
 }
 
 MainWindow::~MainWindow()

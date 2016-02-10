@@ -29,7 +29,7 @@ void MainWindow::runAlgorithm()
     const float s = 0.0f;
     size_t x = 0, y = 0;
     const size_t
-            iters = 1,
+            iters = ui->iterationsBox->text().toInt(),
             w = algorithm.image.width(),
             h = algorithm.image.height();
     point_container input(w, h);
@@ -51,20 +51,19 @@ void MainWindow::runAlgorithm()
         ddebugFile << i << " ";
     ddebugFile.close();
 #endif
-    auto temp = multi_iter(input, iters, s);
-    auto &vec = temp.get();
+    result_point_container = multi_iter(input, iters, s);
+    auto &vec = result_point_container.get();
     auto &vndata = ui->openGLWidget->vndata;
     vndata.clear();
     vndata.resize(vec.size() * 3);
-    for(size_t xx = 0; xx < temp.w(); xx++) {
-        for(size_t yy = 0; yy < temp.h(); yy++) {
-            size_t index = 3 * (xx * temp.h() + yy);
-            vndata[index + 0] = (float)xx / temp.w();
-            vndata[index + 1] = (float)yy / temp.h();
-            vndata[index + 2] = vec[xx * temp.h() + yy];
+    for(size_t xx = 0; xx < result_point_container.w(); xx++) {
+        for(size_t yy = 0; yy < result_point_container.h(); yy++) {
+            size_t index = 3 * (xx * result_point_container.h() + yy);
+            vndata[index + 0] = (float)xx / result_point_container.w();
+            vndata[index + 1] = (float)yy / result_point_container.h();
+            vndata[index + 2] = vec[xx * result_point_container.h() + yy];
         }
     }
-    //ui->openGLWidget->vndata = { 0.1, 0.1, 0.0, 0.2, 0.8, 0, 0.8, 0.1, 0.0 }; // DEBUG
     ui->openGLWidget->updateVertices();
     ui->openGLWidget->update();
 #ifdef QT_DEBUG
@@ -73,6 +72,7 @@ void MainWindow::runAlgorithm()
         debugFile << i << " ";
     debugFile.close();
 #endif
+    computed = true;
 }
 
 void MainWindow::openFile()
@@ -96,10 +96,15 @@ void MainWindow::openFile()
 void MainWindow::regenFractal()
 {
     runAlgorithm();
-    //QMessageBox::information(NULL, "Hello World!", "Regen!");
 }
 
 void MainWindow::calcDimension()
 {
-    QMessageBox::information(NULL, "Hello World!", "Calc!");
+    if (!computed) {
+        QMessageBox::information(NULL, "Image not selected", "Select image before calculating dimension.");
+        return;
+    }
+    int dim = ui->dimensionSubdiv->text().toInt();
+    float dimension = box_dimension( result_point_container, dim );
+    QMessageBox::information(NULL, "Dimension result", "Dimension equals = " + QString::number(dimension));
 }

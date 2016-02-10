@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "algorithm.h"
+#include "fract.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +20,9 @@ public:
 private:
     Ui::MainWindow *ui;
     Logic::Algorithm algorithm;
+    point_container result_point_container;
     void runAlgorithm();
+    bool computed = false;
 
 private slots:
     void openFile();

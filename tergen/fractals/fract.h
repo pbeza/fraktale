@@ -14,7 +14,7 @@ public:
 
     // Data must be filled with >= w*h elements!
     // Will throw otherwise
-    point_container( size_t w, size_t h );
+    point_container( size_t w = 0, size_t h = 0 );
     point_container( const std::vector<float> &dat, size_t w, size_t h );
     point_container( point_container &&other ) = default;
     point_container( const point_container &other ) = default;

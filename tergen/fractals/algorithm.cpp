@@ -24,7 +24,7 @@ void Logic::Algorithm::setImage(const QString& path)
     for (int i = 0; i < image.height(); i++)
     {
         QRgb *scanLine = (QRgb*)image.scanLine(i);
-        for (unsigned int j = 0; j < image.bytesPerLine() / sizeof(QRgb); j += sizeof(QRgb))
+        for (unsigned int j = 0; j < image.bytesPerLine() / sizeof(QRgb); j++)
         {
             QRgb *pix = scanLine + j;
             pixels.append(QColor(*pix));

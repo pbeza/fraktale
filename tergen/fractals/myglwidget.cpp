@@ -21,7 +21,10 @@ Ui::MyGLWidget::MyGLWidget(QWidget *parent)
     : QOpenGLWidget(parent),
     //m_logoVbo(QOpenGLBuffer::VertexBuffer),
       m_Ibo(QOpenGLBuffer::IndexBuffer),
-      cameraPosition(0.5, 0.5, 0.5)
+      cameraPosition(0.5, 0.5, -2.0),
+      m_xRot(5722),
+      m_yRot(2800),
+      m_zRot(40)
 {
     vndata = {
         0.1, 0.9, 0.0,

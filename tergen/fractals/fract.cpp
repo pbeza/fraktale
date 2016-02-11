@@ -80,9 +80,6 @@ point_container single_iter( const point_container &points, float s )
     size_t new_height = sectors_h * sectors_h + 1;
     point_container new_data( new_width, new_height );
 
-    const float w = 1.0f;
-    const float h = 1.0f;
-
     //const float dx = 1.0f / sectors_w;
     //const float dy = 1.0f / sectors_h;
 
@@ -90,39 +87,31 @@ point_container single_iter( const point_container &points, float s )
     //const float c = dy / ym;
 
     for( size_t i = 0; i < sectors_w - 1; i++ ) {
-        //const float x = (float)i / sectors_w;
-        //const float b = x;
         for( size_t j = 0; j < sectors_h - 1; j++ ) {
-//printf( "Sector %lu,%lu\n", i, j );
-            //const float y = (float)j / sectors_h;
-            //const float d = y;
-
             // Lower left, lower right, upper left, upper right
             const float ll = points.get( i, j );
             const float lr = points.get( i + 1, j );
             const float ul = points.get( i, j + 1 );
             const float ur = points.get( i + 1, j + 1 );
 
+            if( true )
             {
                 // The first triangle of the quad
                 const float dzx = lr - ll;
                 const float dzy = ul - ll;
 
-                const float e = dzx * (1 - s) / w;
-                const float f = dzy * (1 - s) / h;
+                const float e = dzx * (1 - s);
+                const float f = dzy * (1 - s);
 
                 const float h = ll;
 
-//printf( "First e:%.2f f:%.2f h: %.2f\n", e, f, h );
-
-                for( size_t ii = 0; ii < points.w() / 2 + 1; ii++ ) {
-                    const float lx = (float)ii / points.w();
-                    for( size_t jj = 0; jj < points.h() / 2 + 1; jj++ ) {
-                        const float ly = (float)ii / points.h();
+                for( size_t ii = 0; ii < points.w(); ii++ ) {
+                    const float lx = (float)ii / (points.w() - 1);
+                    const size_t jjmax = std::min<size_t>( points.h(), (1 - lx) * points.h() + 1 );
+                    //size_t jjmax = points.h();
+                    for( size_t jj = 0; jj < jjmax; jj++ ) {
+                        const float ly = (float)jj / (points.h() - 1);
                         const float lz = points.get( ii, jj );
-
-                        //const float newx = (lx * a) + b;
-                        //const float newy = (ly * c) + d;
                         const float newz = (e * lx) + (f * ly) + (s * lz) + h;
                         new_data.set( i * points.w() + ii,  j * points.h() + jj, newz );
                     }
@@ -133,22 +122,21 @@ point_container single_iter( const point_container &points, float s )
             {
                 // The second triangle of the quad
                 // Kinda inverted
-                const float dzx = -(ur - ul);
-                const float dzy = -(ur - lr);
+                const float dzx = (ur - ul);
+                const float dzy = (ur - lr);
 
-                const float e = dzx * (1 - s) / w;
-                const float f = dzy * (1 - s) / h;
+                const float e = -dzx * (1 - s);
+                const float f = -dzy * (1 - s);
 
                 const float h = ur;
 
-//printf( "Second e:%.2f f:%.2f h: %.2f\n", e, f, h );
-
-                for( size_t ii = points.w() / 2 + 1; ii < points.w(); ii++ ) {
-                    const float lx = 1.0f - (float)ii / points.w();
-                    for( size_t jj = points.h() / 2 + 1; jj < points.h(); jj++ ) {
-                        const float ly = 1.0f - (float)ii / points.h();
+                for( size_t ii = 0; ii < points.w(); ii++ ) {
+                    const float lx = (float)ii / (points.w() - 1);
+                    const size_t jjstart = std::min<size_t>( points.h(), (1 - lx) * points.h() + 1 );
+                    for( size_t jj = jjstart; jj < points.h(); jj++ ) {
+                        const float ly = (float)jj / (points.h() - 1);
                         const float lz = points.get( ii, jj );
-                        const float newz = (e * lx) + (f * ly) + (s * lz) + h;
+                        const float newz = (e * (1 - lx)) + (f * (1 - ly)) + (s * lz) + h;
                         new_data.set( i * points.w() + ii,  j * points.h() + jj, newz );
                     }
                 }
